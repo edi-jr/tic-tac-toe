@@ -8,9 +8,14 @@ html {
   text-align: center;
 }
 
+body {
+  background-color: #121212;
+}
+
 h1 {
   margin: 20px 0;
   font-size: 50px;
+  color: white;
 }
 
 .board {
@@ -22,10 +27,32 @@ h1 {
 .square {
   width: 100px;
   height: 100px;
-  color: rgb(11, 82, 148);
-  border: 1px solid gray;
+  color: #00ffd2;
+  border-right: 3px solid white;
+  border-bottom: 3px solid white;
   font-size: 50px;
   line-height: 100px;
+}
+
+.square:hover {
+  cursor: pointer;
+  background-color: #242424;
+}
+
+.square:nth-child(3n + 3) {
+  border-right: unset;
+}
+
+.square:nth-child(n + 7) {
+  border-bottom: unset;
+}
+
+.x {
+  color: #ff4499;
+}
+
+.o {
+  color: #00ffd2;
 }
 
 .o::before, .x::before {
@@ -60,13 +87,14 @@ h1 {
   margin: 20px auto 0;
   font-size: 16px;
   padding: 5px 10px;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 5px;
-  background-color: white;
-  color: black;
+  background-color: #121212;
+  color: white;
 }
 
 .restart:hover {
   cursor: pointer;
-  background-color: lightgrey;
+  background-color: white;
+  color: #121212;
 }
