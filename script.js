@@ -31,29 +31,35 @@ const gameController = (() => {
     }
     if(gameBoard.board[position] === "") {
       gameBoard.board[position] = gameBoard.symbols[playerTime];
+      displayController.updatePlayerDisplay();
       playerTime = playerTime == 0 ? 1 : 0;
       moves++;
     }
   }
 
   const isGameOver = () => {
-    for(let i = 0; i < winStates.length; i++) {
-      let seq = winStates[i];
-      let pos1 = seq[0];
-      let pos2 = seq[1];
-      let pos3 = seq[2];
-      if(
-        gameBoard.board[pos1] == gameBoard.board[pos2] &&
-        gameBoard.board[pos1] == gameBoard.board[pos3] &&
-        gameBoard.board[pos1] != ""
-        ) {
-        gameOver = true;
+    if(!gameOver) {
+      for(let i = 0; i < winStates.length; i++) {
+        let seq = winStates[i];
+        let pos1 = seq[0];
+        let pos2 = seq[1];
+        let pos3 = seq[2];
+        if(
+          gameBoard.board[pos1] == gameBoard.board[pos2] &&
+          gameBoard.board[pos1] == gameBoard.board[pos3] &&
+          gameBoard.board[pos1] != ""
+          ) {
+          gameOver = true;
+          playerTime = playerTime == 0 ? 1 : 0;
+          displayController.updateWinnerDisplay(playerTime);
+        }
       }
+      if(moves === 9) {
+        gameOver = true;
+        displayController.updateWinnerDisplay();
+      }
+      return gameOver;
     }
-    if(moves === 9) {
-      gameOver = true;
-    }
-    return gameOver;
   }
 
   return { 
@@ -64,15 +70,31 @@ const gameController = (() => {
 
 const displayController = (() => {
   const squares = document.querySelectorAll(".square");
+  const players = document.querySelector(".players");
+  const [player1, player2] = players.children;
 
   const handleClick = (event) => {
-    let square = event.target;
-    let position = square.id;
-    gameController.handleMove(position);
-    if(gameController.isGameOver()) {
-      setTimeout(() => alert("Game has ended!"), 10);
+    if(!gameController.isGameOver()) {
+      let square = event.target;
+      let position = square.id;
+      gameController.handleMove(position);
+      updateSquare(square, position);
+      gameController.isGameOver();
     }
-    updateSquare(square, position);
+  }
+
+  const updatePlayerDisplay = () => {
+    player1.classList.toggle("active");
+    player2.classList.toggle("active");
+  };
+
+  const updateWinnerDisplay = (winner) => {
+    if(winner !== undefined) {
+      players.innerHTML = `<div class="${gameBoard.symbols[winner]} active"> wins!<div>`;
+    }
+    else {
+      players.innerHTML = `<div class="active">It's a tie!<div>`;
+    }
   }
 
   const updateSquare = (square, position) => {
@@ -83,6 +105,7 @@ const displayController = (() => {
   squares.forEach(square => square.addEventListener("click", handleClick));
 
   return {
-    updateSquare
+    updatePlayerDisplay,
+    updateWinnerDisplay,
   }
 })();
