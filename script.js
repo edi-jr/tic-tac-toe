@@ -62,9 +62,19 @@ const gameController = (() => {
     }
   }
 
+  const restartGame = () => {
+    gameOver = false;
+    playerTime = 0;
+    moves = 0;
+    gameBoard.board.forEach((el, index) => {
+      gameBoard.board[index] = "";
+    });
+  }
+
   return { 
     handleMove,
     isGameOver,
+    restartGame,
   };
 })();
 
@@ -72,6 +82,7 @@ const displayController = (() => {
   const squares = document.querySelectorAll(".square");
   const players = document.querySelector(".players");
   const [player1, player2] = players.children;
+  const restartBtn = document.querySelector(".restart");
 
   const handleClick = (event) => {
     if(!gameController.isGameOver()) {
@@ -102,7 +113,22 @@ const displayController = (() => {
     square.innerHTML = `<div class="${symbol}"></div>`;
   }
 
+  const updateSquares = () => {
+    squares.forEach(square => square.innerHTML = "");
+  }
+
+  const restartGame = () => {
+    player1.classList.add("active");
+    player2.classList.remove("active");
+    players.innerHTML = "";
+    players.appendChild(player1);
+    players.appendChild(player2);
+    gameController.restartGame();
+    updateSquares();
+  }
+
   squares.forEach(square => square.addEventListener("click", handleClick));
+  restartBtn.addEventListener("click", restartGame);
 
   return {
     updatePlayerDisplay,
