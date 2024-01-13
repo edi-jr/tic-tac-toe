@@ -10,18 +10,19 @@ html {
 
 body {
   background-color: #121212;
+  color: white;
 }
 
 h1 {
   margin: 20px 0;
   font-size: 50px;
-  color: white;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(3, auto);
   justify-content: center;
+  margin: 0 auto;
 }
 
 .square {
@@ -32,6 +33,14 @@ h1 {
   border-bottom: 3px solid white;
   font-size: 50px;
   line-height: 100px;
+}
+
+@media screen and (max-width: 350px) {
+  .square {
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+  }
 }
 
 .square:hover {

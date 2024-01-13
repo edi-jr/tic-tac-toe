@@ -54,7 +54,7 @@ const gameController = (() => {
           displayController.updateWinnerDisplay(playerTime);
         }
       }
-      if(moves === 9) {
+      if(moves === 9 && !gameOver) {
         gameOver = true;
         displayController.updateWinnerDisplay();
       }
